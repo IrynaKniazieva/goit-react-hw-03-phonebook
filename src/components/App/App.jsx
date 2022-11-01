@@ -49,6 +49,27 @@ class App extends React.Component {
     );
   };
 
+  componentDidMount() {
+    console.log ('App componentDidMount');
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+// если по условию есть контакты выполнится если нет не выполнится
+    if (parsedContacts) {
+      this.setState({contacts: parsedContacts});
+    }
+  }
+
+  // если state обновился записываем в localStorage
+  componentDidUpdate(prevProps, prevState) {
+    console.log('App componentDidUpdate');
+
+    // проверку делать обязательно иначе будет зацикливание
+    if(this.state.contacts !== prevState.contacts) {
+      console.log("обновилось")
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     const { filter } = this.state;
 
